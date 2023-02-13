@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "arduino.h": "c",
+        "lv_port_indev.h": "c"
+    }
+}

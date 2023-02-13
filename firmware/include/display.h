@@ -6,8 +6,10 @@
 #include <WiFi.h>
 #include "conf.h"
 #include "sensors.h"
-
-LV_FONT_DECLARE(lv_font_number_48);
+// #include "page.h"
+#include "input.h"
+LV_FONT_DECLARE(lv_chinese_20);
+LV_FONT_DECLARE(lv_chinese_48);
 void display_init();
 void display_routine();
 

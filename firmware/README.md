@@ -11,6 +11,8 @@
 - 实现数据实时上传手机
 - 实现SmartConfig一键配网
 - 实现中文显示
+- 实现分页显示
+- 实现编码器控制
 
 ## 安装过程
 
@@ -33,3 +35,4 @@
 - [peng-zhihui/HoloCubic: 带网络功能的伪全息透明显示桌面站 (github.com)](https://github.com/peng-zhihui/HoloCubic)
 - [基于Arduino框架下的ESP32移植LVGL教程_Yogurt-994的博客-CSDN博客_esp32 lvgl](https://blog.csdn.net/qq_52619462/article/details/128294156)
 - [Online Font Converter Convert TTF and WOFF fonts to C array.](https://lvgl.io/tools/fontconverter)
+- [lvgl使用旋转编码器做为外部输入设备](https://blog.csdn.net/wojueburenshu/article/details/123033471)

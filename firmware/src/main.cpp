@@ -7,25 +7,25 @@
 #include <Blinker.h>
 #include "display.h"
 #include "dht.h"
+// #include "input.h"
 
 extern float humidity;
 extern float temperature;
 BlinkerNumber blinker_humidity("humidity");
 BlinkerNumber blinker_temperature("temperature");
-
 void dataRead(const String &data);
 
 void setup()
 {
   // put your setup code here, to run once:
   Serial.begin(115200);
-  BLINKER_DEBUG.stream(Serial);
   dht_init();
-  display_init();
+  BLINKER_DEBUG.stream(Serial);
   Blinker.begin(blinker_auth);
   Blinker.attachData(dataRead);
   configTime(8 * 3600, 0, ntp_server);
-  // Blinker.reset();
+  display_init();
+  // input_init();
 }
 
 void loop()
@@ -35,7 +35,6 @@ void loop()
   display_routine();
   blinker_humidity.print(humidity);
   blinker_temperature.print(temperature);
-  // Blinker.delay(2000);
 }
 
 void dataRead(const String &data)

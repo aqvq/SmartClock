@@ -16,5 +16,5 @@ constexpr uint16_t date_string_size = 50;
 constexpr uint16_t humidity_string_size = 30;
 constexpr uint16_t temperature_string_size = 30;
 constexpr uint16_t screen_buffer_size = screen_height * screen_width / 10;
-
+constexpr uint16_t key_long_press_time = 500;
 #endif
