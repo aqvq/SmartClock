@@ -8,11 +8,15 @@
 
 - 实时联网校时
 - 实现温湿度检测
-- 实现数据实时上传手机
+- 实现温湿度数据实时上传手机
 - 实现SmartConfig一键配网
 - 实现中文显示
 - 实现分页显示
 - 实现编码器控制
+- 实现计时和倒计时功能
+- 实现定时闹钟功能
+- 实现数据存储功能
+- 实现蜂鸣器驱动
 
 ## 安装过程
 
@@ -36,3 +40,6 @@
 - [基于Arduino框架下的ESP32移植LVGL教程_Yogurt-994的博客-CSDN博客_esp32 lvgl](https://blog.csdn.net/qq_52619462/article/details/128294156)
 - [Online Font Converter Convert TTF and WOFF fonts to C array.](https://lvgl.io/tools/fontconverter)
 - [lvgl使用旋转编码器做为外部输入设备](https://blog.csdn.net/wojueburenshu/article/details/123033471)
+- [ESP32的FLASH、NVS、SPIFFS、OTA等存储分布以及启动过程](https://blog.csdn.net/tiandiren111/article/details/123144089)
+- [《C++ Primer》笔记 第17章 标准库特殊设施 ](https://www.cnblogs.com/juzaizai/p/15082749.html)
+- [玩转 ESP32 + Arduino (二十一) SPIFFS文件系统](https://blog.csdn.net/finedayforu/article/details/108661563)

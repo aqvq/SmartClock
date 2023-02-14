@@ -2,7 +2,7 @@
 #define SHANG_NETWORK_H
 
 #include <Arduino.h>
-#include <esp_wifi.h> //用于esp_wifi_restore() 删除保存的wifi信息
+// #include <esp_wifi.h> //用于esp_wifi_restore() 删除保存的wifi信息
 #include <WiFi.h>
 #include "conf.h"
 

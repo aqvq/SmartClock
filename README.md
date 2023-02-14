@@ -11,11 +11,10 @@
 ## 技术要点
 - ESP32
 - Arduino
-- FreeRTOS
-- uni-app
+- LVGL
+- Blinker
 
 ## 文件结构
-- /app 小程序
 - /firmware 固件程序
-- /pcb 硬件电路
+- /hardware 硬件电路
 - /docs 文档

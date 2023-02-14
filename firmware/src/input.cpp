@@ -1,10 +1,10 @@
 #include "input.h"
 
-lv_indev_t *indev_encoder;
+static ESP32Encoder encoder;
 static int32_t encoder_diff;
 static lv_indev_state_t encoder_state;
+lv_indev_t *indev_encoder;
 lv_indev_drv_t indev_drv;
-static ESP32Encoder encoder;
 lv_group_t *group;
 
 void input_init(void)
@@ -46,18 +46,11 @@ static void encoder_read(lv_indev_drv_t *indev_drv, lv_indev_data_t *data)
             encoder_state = LV_INDEV_STATE_PR;
         }
     }
-    if (digitalRead(ENCODER_C) == HIGH)
-    {
-        delay(10);
-        if (digitalRead(ENCODER_C) == HIGH)
-        {
-            encoder_state = LV_INDEV_STATE_REL;
-        }
-    }
     data->state = encoder_state;
     lastCount = newCount;
-    Serial.printf("\nenc_diff: %d\n", data->enc_diff);
-    Serial.printf("\nstate: %d\n", data->state);
+    encoder_state = LV_INDEV_STATE_REL;
+    // Serial.printf("\nenc_diff: %d\n", data->enc_diff);
+    // Serial.printf("\nstate: %d\n", data->state);
 }
 
 /*Call this function in an interrupt to process encoder events (turn, press)*/

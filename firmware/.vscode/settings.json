@@ -1,6 +1,10 @@
 {
     "files.associations": {
         "arduino.h": "c",
-        "lv_port_indev.h": "c"
+        "lv_port_indev.h": "c",
+        "clock_create.h": "c",
+        "pages.h": "c",
+        "lvgl.h": "c",
+        "sensors.h": "c"
     }
 }

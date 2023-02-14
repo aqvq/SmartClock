@@ -2,6 +2,7 @@
 
 #define DHTPIN 17
 #define DHTTYPE DHT11
+#define BUZPIN 26
 DHT dht(DHTPIN, DHTTYPE);
 
 void dht_init()
@@ -29,4 +30,27 @@ void dht_update(float *humidity, float *temperature)
 
     *humidity = h;
     *temperature = t;
+}
+
+void buzzer_init()
+{
+    pinMode(BUZPIN, OUTPUT);
+    digitalWrite(BUZPIN, HIGH);
+}
+
+void buzzer_start()
+{
+    digitalWrite(BUZPIN, LOW);
+}
+
+void buzzer_stop()
+{
+    digitalWrite(BUZPIN, HIGH);
+}
+
+void buzzer_ring(uint16_t time)
+{
+    buzzer_start();
+    delay(time);
+    buzzer_stop();
 }
