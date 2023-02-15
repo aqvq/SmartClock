@@ -1,3 +1,6 @@
+// WiFi网络模块
+// 主要实现AutoConfig和SmartConfig功能
+
 #ifndef SHANG_NETWORK_H
 #define SHANG_NETWORK_H
 
@@ -6,9 +9,13 @@
 #include <WiFi.h>
 #include "conf.h"
 
+// WiFi初始化
 void wifi_init();
+// 关闭WiFi
 void wifi_close();
+// WiFi SmartConfig配置
 void wifi_smart_config();
+// WiFi AutoConfig配置
 bool wifi_auto_config();
 
 #endif

@@ -4,7 +4,7 @@ std::bitset<max_clock_num> clock_bitmap;
 void clock_init()
 {
     Serial.println("Opening SPIFFS");
-    while (!SPIFFS.begin(true))
+    while (!SPIFFS.begin(true)) // 首次进行文件系统初始化，后续保持不变
     {
         Serial.println("...");
     }

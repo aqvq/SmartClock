@@ -1,3 +1,10 @@
+// 此模块是项目功能逻辑代码，其他文件都是驱动代码
+// 此模块先使用SquareLine进行基本代码的生成
+// 但是SquareLine使用限制并且并不十分好用
+// 电脑预览和实际显示并不完全相同，需要手动微调
+// 本模块界面渲染与逻辑控制深度耦合，不易扩展
+// 但是采用TabView，比较好在页面层级上进行扩展
+
 #include "ui.h"
 
 static char time_string[time_string_size] = "加载中";

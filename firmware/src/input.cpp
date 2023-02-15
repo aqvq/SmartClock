@@ -1,3 +1,5 @@
+// 使用旋转编码器作为输入设备
+
 #include "input.h"
 
 static ESP32Encoder encoder;

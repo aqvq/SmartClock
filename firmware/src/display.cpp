@@ -43,6 +43,7 @@ void display_init(void)
     input_init();
 
     screen = lv_obj_create(NULL);
+    // 采用TabView进行页面切换
     lv_obj_t *tabview = lv_tabview_create(screen, LV_DIR_BOTTOM, 30);
     lv_obj_set_style_text_font(tabview, &lv_chinese_20, 0);
 

@@ -5,6 +5,9 @@
 #define BUZPIN 26
 DHT dht(DHTPIN, DHTTYPE);
 
+// ================================
+// DHT11温湿度传感器模块部分
+// ================================
 void dht_init()
 {
     Serial.println(F("DHTxx test!"));
@@ -32,6 +35,9 @@ void dht_update(float *humidity, float *temperature)
     *temperature = t;
 }
 
+// ================================
+// 蜂鸣器部分
+// ================================
 void buzzer_init()
 {
     pinMode(BUZPIN, OUTPUT);

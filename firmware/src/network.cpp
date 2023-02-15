@@ -1,3 +1,7 @@
+// 首先进行WiFi自动连接，在3次失败之后进行SmartConfig配网
+// 需要支持SmartConfig功能的APP或小程序进行配置
+// 推荐使用ESP TOUCH V2成功率大大提升
+
 #include "network.h"
 
 void wifi_init()

@@ -23,6 +23,8 @@ void setup()
   wifi_init();
   dht_init();
   buzzer_init();
+  // 注释了关于Blinker相关的部分
+  // 开机的时候比较卡，自己写的WiFi模块已经够用了
   // BLINKER_DEBUG.stream(Serial);
   // Blinker.begin(blinker_auth);
   // Blinker.attachData(dataRead);

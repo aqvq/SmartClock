@@ -6,17 +6,17 @@
 
 ## 实现功能
 
-- 实时联网校时
-- 实现温湿度检测
-- 实现温湿度数据实时上传手机
-- 实现SmartConfig一键配网
-- 实现中文显示
-- 实现分页显示
-- 实现编码器控制
-- 实现计时和倒计时功能
+- 实现实时显示时间和日期
+- 实现实时温湿度检测
+- 实现整点报时
+- 实现WiFi一键配网与自动连接
+- 实现中文显示界面
+- 实现分页显示各个功能
+- 实现使用旋转编码器进行输入控制
+- 实现正计时计时和倒计时功能
 - 实现定时闹钟功能
-- 实现数据存储功能
-- 实现蜂鸣器驱动
+- 实现闹钟数据存储与读取功能
+- 实现使用蜂鸣器响铃
 
 ## 安装过程
 
@@ -24,22 +24,10 @@
 2. `PlatformIO`会自动安装环境依赖，请等待安装结束
 3. 参考[配置要求](#配置要求)部分进行项目环境的配置
 4. 编译烧录固件
+5. 焊接PCB与组装硬件
 
 ## 配置要求
-1. 配置`TFT_eSPI/User_Setup.h`中的参数，`include/TFT_Setup.h`为已有的模板可供参考
-2. 配置`lvgl/lv_conf.h`中的参数，`include/lv_conf.h`为已有的模板可供参考
-3. 配置`DHT`，将`DHT_U.cpp`和`DHT_U.h`删除
+1. 配置`TFT_eSPI/User_Setup.h`中的参数，其中`include/TFT_Setup.h`为已有的模板可供参考
+2. 配置`lvgl/lv_conf.h`中的参数，其中`include/lv_conf.h`为已有的模板可供参考
+3. 配置`DHT`，将`DHT_U.cpp`和`DHT_U.h`删除，否则会报错
 
-## 参考资料
-- [超详细ESP32驱动TFT屏幕教程，有手就行_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1Q24y1d7f6/?vd_source=653c32e1b9068b6dc916bedc5c6c2c7d)
-- [ESP32与微信小程序_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1tv411w74d/?p=10&spm_id_from=333.880.my_history.page.click&vd_source=653c32e1b9068b6dc916bedc5c6c2c7d)
-- [Homepea7/ESP32_Code: 一些ESP32的代码 (github.com)](https://github.com/Homepea7/ESP32_Code)
-- [Online font converter - TTF or WOFF fonts to C array | LVGL](https://lvgl.io/tools/fontconverter)
-- [欢迎阅读百问网LVGL中文开发手册！ — 百问网LVGL中文教程文档 文档 (100ask.net)](http://lvgl.100ask.net/8.2/index.html)
-- [peng-zhihui/HoloCubic: 带网络功能的伪全息透明显示桌面站 (github.com)](https://github.com/peng-zhihui/HoloCubic)
-- [基于Arduino框架下的ESP32移植LVGL教程_Yogurt-994的博客-CSDN博客_esp32 lvgl](https://blog.csdn.net/qq_52619462/article/details/128294156)
-- [Online Font Converter Convert TTF and WOFF fonts to C array.](https://lvgl.io/tools/fontconverter)
-- [lvgl使用旋转编码器做为外部输入设备](https://blog.csdn.net/wojueburenshu/article/details/123033471)
-- [ESP32的FLASH、NVS、SPIFFS、OTA等存储分布以及启动过程](https://blog.csdn.net/tiandiren111/article/details/123144089)
-- [《C++ Primer》笔记 第17章 标准库特殊设施 ](https://www.cnblogs.com/juzaizai/p/15082749.html)
-- [玩转 ESP32 + Arduino (二十一) SPIFFS文件系统](https://blog.csdn.net/finedayforu/article/details/108661563)
