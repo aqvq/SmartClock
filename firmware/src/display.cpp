@@ -51,10 +51,12 @@ void display_init(void)
     lv_obj_t *tab_count = lv_tabview_add_tab(tabview, "计时");
     lv_obj_t *tab_clock = lv_tabview_add_tab(tabview, "闹钟");
 
+    // 初始化控件
     ui_time_init(tab_time);
     ui_count_init(tab_count);
     ui_clock_list_init(tab_clock);
     ui_clock_create_init(tab_clock);
+    // 加载屏幕
     lv_scr_load(screen);
     display_routine();
 }

@@ -1,7 +1,7 @@
 // LVGL输入驱动模块
 
-#ifndef LV_PORT_INDEV_TEMPL_H
-#define LV_PORT_INDEV_TEMPL_H
+#ifndef SHANG_INPUT_H
+#define SHANG_INPUT_H
 
 #include <lvgl.h>
 #include "conf.h"

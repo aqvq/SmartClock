@@ -18,7 +18,10 @@ enum
     BACKWARD,
     NOTSTART,
     WORKING,
-    SUSPEND
+    SUSPEND,
+    NONET,
+    SETTIME,
+    NORMAL
 };
 
 // 重置定时器

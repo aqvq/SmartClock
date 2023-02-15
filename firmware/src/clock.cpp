@@ -1,4 +1,5 @@
 #include "clock.h"
+
 std::bitset<max_clock_num> clock_bitmap;
 
 void clock_init()

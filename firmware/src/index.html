@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>WIFI
+
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<style type="text/css">
+    .input {
+        display: block;
+        margin-top: 10px;
+    }
+
+    .input span {
+        width: 100px;
+        float: left;
+        float: left;
+        height: 36px;
+        line-height: 36px;
+    }
+
+    .input input {
+        height: 30px;
+        width: 200px;
+    }
+
+    .btn {
+        width: 120px;
+        height: 35px;
+        background-color: #000000;
+        border: 0px;
+        color: #ffffff;
+        margin-top: 15px;
+        margin-left: 100px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+</style>
+
+<body>
+    <form method="POST" action="configwifi">
+        <label class="input">
+            <span>
+                WiFi名称
+            </span>
+            <input type="text" name="ssid" placeholder="请输入WiFi名称" required oninvalid="validate('WiFi名称不能为空')">
+        </label>
+        <label class="input">
+            <span>
+                WiFi密码
+            </span>
+            <input type="password" name="pass" placeholder="请输入WiFi密码" required oninvalid="validate('请输入至少8位的密码')">
+        </label>
+        <input class="btn" type="submit" name="submit" value="连接">
+        <p class="near">
+            <br>
+            <span> 附近的WiFi </span>
+        </p>
+    </form>
+</body>
+
+</html>

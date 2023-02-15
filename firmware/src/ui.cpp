@@ -7,10 +7,10 @@
 
 #include "ui.h"
 
-static char time_string[time_string_size] = "加载中";
+char time_string[time_string_size] = "连接网络";
+char date_string[date_string_size] = "";
 static char humidity_string[humidity_string_size] = "";
 static char temperature_string[temperature_string_size] = "";
-static char date_string[date_string_size] = "";
 static const String WDAY_NAMES[] = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"}; // 星期
 static int last_second = -1;
 static int last_minute = -1;
@@ -18,6 +18,7 @@ static int last_hour = -1;
 float humidity = 0.0;
 float temperature = 0.0;
 struct tm timeinfo;
+int time_status;
 
 uint8_t direction = FORWARD;
 uint8_t status = NOTSTART;
@@ -151,23 +152,39 @@ void ui_time_timer100(lv_timer_t *timer)
     lv_obj_t **children = (lv_obj_t **)timer->user_data;
     dht_update(&humidity, &temperature);
     getLocalTime(&timeinfo);
-    if (WiFi.status() == WL_CONNECTED && timeinfo.tm_year != 70)
+    if (WiFi.status() == WL_CONNECTED)
     {
-        sprintf(time_string, "%02d:%02d:%02d", timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec);
-        sprintf(date_string, "%04d年%02d月%02d日 %s", timeinfo.tm_year + 1900, timeinfo.tm_mon + 1, timeinfo.tm_mday, WDAY_NAMES[timeinfo.tm_wday]);
-        sprintf(humidity_string, "湿度: %2.1f%%", humidity);
-        sprintf(temperature_string, "温度: %2.1f°C", temperature);
+        if (timeinfo.tm_year != 70)
+        {
+            time_status = NORMAL;
+            sprintf(time_string, "%02d:%02d:%02d", timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec);
+            sprintf(date_string, "%04d年%02d月%02d日 %s", timeinfo.tm_year + 1900, timeinfo.tm_mon + 1, timeinfo.tm_mday, WDAY_NAMES[timeinfo.tm_wday]);
+            sprintf(humidity_string, "湿度: %2.1f%%", humidity);
+            sprintf(temperature_string, "温度: %2.1f°C", temperature);
+        }
+        else
+        {
+            if (time_status != SETTIME)
+            {
+                sprintf(time_string, "同步时间");
+                sprintf(date_string, "");
+                sprintf(humidity_string, "");
+                sprintf(temperature_string, "");
+                configTime(8 * 3600, 0, ntp_server);
+                time_status = SETTIME;
+            }
+        }
     }
     else
     {
-        // sprintf(time_string, "__:__:__");
-        // sprintf(date_string, "____年__月__日 星期__");
-        // sprintf(humidity_string, "湿度: NaN");
-        // sprintf(temperature_string, "温度: NaN");
-        sprintf(time_string, "加载中");
-        sprintf(date_string, "");
-        sprintf(humidity_string, "");
-        sprintf(temperature_string, "");
+        if (time_status != NONET)
+        {
+            sprintf(time_string, "连接网络");
+            sprintf(date_string, "");
+            sprintf(humidity_string, "");
+            sprintf(temperature_string, "");
+            time_status = NONET;
+        }
     }
     lv_label_set_text(children[0], time_string);
     lv_label_set_text(children[1], humidity_string);
@@ -743,6 +760,12 @@ void ui_clock_list_init(lv_obj_t *parent)
     lv_obj_add_event_cb(ui_Button6, ui_clock_list_create_event, LV_EVENT_CLICKED, NULL);
 }
 
+void ui_time_timer_update_time(lv_timer_t *timer)
+{
+    if (WiFi.status() == WL_CONNECTED)
+        configTime(8 * 3600, 0, ntp_server);
+}
+
 void ui_time_init(lv_obj_t *parent)
 {
 
@@ -823,4 +846,5 @@ void ui_time_init(lv_obj_t *parent)
     lv_timer_t *timer2 = lv_timer_create(ui_time_timer120, 120, NULL);
     lv_timer_t *timer3 = lv_timer_create(ui_time_timer500, 500, NULL);
     lv_timer_t *timer4 = lv_timer_create(ui_time_timer700, 700, NULL);
+    lv_timer_t *timer5 = lv_timer_create(ui_time_timer_update_time, update_time_period, NULL);
 }
