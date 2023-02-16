@@ -13,7 +13,7 @@
 - 实现中文显示界面
 - 实现分页显示各个功能
 - 实现使用旋转编码器进行输入控制
-- 实现正计时计时和倒计时功能
+- 实现正计时和倒计时功能
 - 实现定时闹钟功能
 - 实现闹钟数据存储与读取功能
 - 实现使用蜂鸣器响铃
@@ -31,4 +31,20 @@
 1. 配置`TFT_eSPI/User_Setup.h`中的参数，其中`include/TFT_Setup.h`为已有的模板可供参考
 2. 配置`lvgl/lv_conf.h`中的参数，其中`include/lv_conf.h`为已有的模板可供参考
 3. 配置`DHT`，将`DHT_U.cpp`和`DHT_U.h`删除，否则会报错
+
+## 文件结构
+
+> 更详细的项目逻辑解释在源代码的注释中
+
+- /include 程序头文件
+- /lib 程序所需的库
+- /src 程序源代码
+  - main.cpp 主程序
+  - network.cpp 网络配置模块
+  - ui.cpp 交互界面模块
+  - display.cpp 显示驱动模块
+  - input.cpp 输入设备驱动模块
+  - sensors.cpp 传感器模块
+  - clock.cpp 闹钟数据处理模块
+  - /fonts 汉字字库
 
