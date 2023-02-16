@@ -2,7 +2,7 @@
 
 ## 介绍
 
-本项目是智能家庭时钟的固件程序部分，使用Arduino编写。
+此文件夹是智能家庭时钟的固件程序部分，主要使用Arduino编写。
 
 ## 实现功能
 
@@ -18,6 +18,7 @@
 - 实现闹钟数据存储与读取功能
 - 实现使用蜂鸣器响铃
 - 实现重置按钮和网络指示灯
+- 实现自动息屏功能
 
 ## 安装过程
 
@@ -28,9 +29,9 @@
 5. 焊接PCB与组装硬件
 
 ## 配置要求
-1. 配置`TFT_eSPI/User_Setup.h`中的参数，其中`include/TFT_Setup.h`为已有的模板可供参考
-2. 配置`lvgl/lv_conf.h`中的参数，其中`include/lv_conf.h`为已有的模板可供参考
-3. 配置`DHT`，将`DHT_U.cpp`和`DHT_U.h`删除，否则会报错
+1. 将配置文件`include/User_Setup.h`覆盖库`TFT_eSPI`中的同名文件
+2. 将配置文件`include/lv_conf.h`覆盖库`lvgl`中的同名文件
+3. 将库`DHT sensor library`中的文件`DHT_U.cpp`和`DHT_U.h`删除，否则会报错
 
 ## 文件结构
 
