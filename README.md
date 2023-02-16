@@ -43,6 +43,7 @@
 - 实现了WiFi一键配网功能，只要连接本设备WiFi，便会自动打开登陆页面，输入WiFi名称和密码，进行网络配置，方便快捷
 - 增加网络指示灯，当指示灯闪烁表示正在尝试连接已有WiFi，指示灯暗表示需要配置网络，指示灯常亮表示已成功连接网络
 - 增加重置按键，当用户长按后，指示灯闪烁提示，清除记忆的网络连接重新配置
+- 实现在一段时间没有操作后，降低屏幕亮度，节省电能（在用户进行操作或计时时，屏幕保持常亮，闹钟无论在何时都能正常工作）
 
 ## 文件结构
 
@@ -65,4 +66,6 @@
 - [玩转 ESP32 + Arduino (二十一) SPIFFS文件系统](https://blog.csdn.net/finedayforu/article/details/108661563)
 - [ESP32通过WEB页面连接WIFI+复位重连+删除已连WiFi（Arduino）](https://blog.csdn.net/u014091490/article/details/99709431)
 - [ESP32超详细学习记录：wifi配网，AP配网，浏览器配网，无线配网_喜暖知寒的博客-CSDN博客_esp32浏览器](https://blog.csdn.net/qq_41650023/article/details/124674493?spm=1001.2101.3001.6661.1&utm_medium=distribute.pc_relevant_t0.none-task-blog-2~default~CTRLIST~Rate-1-124674493-blog-99709431.pc_relevant_multi_platform_whitelistv4&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2~default~CTRLIST~Rate-1-124674493-blog-99709431.pc_relevant_multi_platform_whitelistv4&utm_relevant_index=1)
-
+- [Simulate IoT Projects in Your Browser](https://wokwi.com/)
+- [Arduino ESP32 ADC功能介绍以及模拟量信号读取示例](https://blog.csdn.net/weixin_42880082/article/details/121055405)
+- [五、ESP32使用PWM控制蜂鸣器](https://www.qutaojiao.com/1656.html)

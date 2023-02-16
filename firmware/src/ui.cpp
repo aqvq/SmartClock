@@ -19,7 +19,7 @@ float humidity = 0.0;
 float temperature = 0.0;
 struct tm timeinfo;
 int time_status;
-
+unsigned long initialized_time;
 uint8_t direction = FORWARD;
 uint8_t status = NOTSTART;
 
@@ -156,6 +156,8 @@ void ui_time_timer100(lv_timer_t *timer)
     {
         if (timeinfo.tm_year != 70)
         {
+            if (time_status != NORMAL)
+                initialized_time = millis();
             time_status = NORMAL;
             sprintf(time_string, "%02d:%02d:%02d", timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec);
             sprintf(date_string, "%04d年%02d月%02d日 %s", timeinfo.tm_year + 1900, timeinfo.tm_mon + 1, timeinfo.tm_mday, WDAY_NAMES[timeinfo.tm_wday]);
@@ -219,6 +221,7 @@ void ui_time_timer500(lv_timer_t *timer)
 
 void ui_time_timer700(lv_timer_t *timer)
 {
+    // 闹铃功能
     for (int i = 0; i < 24; ++i)
     {
         for (int j = 0; j < 60; ++j)

@@ -9,6 +9,10 @@ static void *buf2 = malloc(sizeof(lv_color_t) * screen_buffer_size); /*Declare a
 #endif
 lv_obj_t *screen;
 
+extern int time_status;
+extern uint8_t status;
+extern unsigned long initialized_time;
+
 void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p)
 {
     uint32_t w = (area->x2 - area->x1 + 1);
@@ -24,6 +28,9 @@ void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color
 
 void display_init(void)
 {
+    ledcSetup(0, 5000, 12);
+    ledcAttachPin(screen_light_pin, 0);
+
     tft.init();
     tft.fillScreen(0);
     // tft.invertDisplay(true);
@@ -63,6 +70,12 @@ void display_init(void)
 
 void display_routine()
 {
+#if ENABLE_SLEEP
+    if (time_status == NORMAL && status == NOTSTART && lv_disp_get_inactive_time(NULL) > sleep_time && millis() - initialized_time > sleep_time)
+        ledcWrite(0, int(brightness * 4096));
+    else
+        ledcWrite(0, 4096);
+#endif
     lv_task_handler();
-    vTaskDelay(1);
+    // vTaskDelay(1);
 }

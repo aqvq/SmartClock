@@ -9,6 +9,7 @@
 #include <ESPmDNS.h>  //用于设备域名 MDNS.begin("esp32")
 #include <esp_wifi.h> //用于esp_wifi_restore() 删除保存的wifi信息
 #include "conf.h"
+
 extern const int LED; // 设置LED引脚
 
 //===========需要调用的函数===========
@@ -19,6 +20,7 @@ void eraseWiFi();                  // 删除保存的wifi信息
 void LEDinit();                    // LED初始化
 void checkDNS_HTTP();              // 检测客户端DNS&HTTP请求
 void connectToWiFi(int timeOut_s); // 连接WiFi
+void closeWiFi();                  // 关闭WiFi
 
 //===========内部函数===========
 void handleRoot();                    // 处理网站根目录的访问请求

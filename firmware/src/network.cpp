@@ -13,6 +13,7 @@ static unsigned long timePressed = 0;
 DNSServer dnsServer;       // 创建dnsServer实例
 WebServer server(webPort); // 开启web服务, 创建TCP SERVER,参数: 端口号,最大连接数
 const int resetPin = 13;   // 设置重置按键引脚,用于删除WiFi信息
+
 #define ROOT_HTML "<!DOCTYPE html><html><head><title>WIFI</title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"></head><style type=\"text/css\">.input {display: block;margin-top: 10px;}.input span {width: 100px;float: left;float: left;height: 36px;line-height: 36px;}.input input {height: 30px;width: 200px;}.btn {width: 120px;height: 35px;background-color: #000000;border: 0px;color: #ffffff;margin-top: 15px;margin-left: 100px;}form {display: flex;flex-direction: column;align-items: center;}</style><body><form method=\"POST\" action=\"configwifi\"><label class=\"input\"><span>WiFi名称</span><input type=\"text\" name=\"ssid\" placeholder=\"请输入WiFi名称\" required oninvalid=\"validate('WiFi名称不能为空')\"></label><label class=\"input\"><span>WiFi密码</span><input type=\"password\" name=\"pass\" placeholder=\"请输入WiFi密码\" required oninvalid=\"validate('请输入至少8位的密码')\"></label><input class=\"btn\" type=\"submit\" name=\"submit\" value=\"连接\"><p class=\"near\"><br><span> 附近的WiFi </span></p>"
 
 /*
@@ -41,7 +42,7 @@ void network_init()
  */
 void network_routine()
 {
-
+    // 监听重置按键长按状态
     if (digitalRead(resetPin) == LOW)
     {
         if (resetPressed == false)
@@ -63,8 +64,18 @@ void network_routine()
     {
         resetPressed = false;
     }
+    // 监听网络状态
     checkDNS_HTTP();    // 检测客户端DNS&HTTP请求，也就是检查配网页面那部分
     checkConnect(true); // 检测网络连接状态，参数true表示如果断开重新连接
+}
+
+void closeWiFi()
+{
+    if (WiFi.status() == WL_CONNECTED)
+    {
+        WiFi.disconnect(true); // 断开wifi网络
+        WiFi.mode(WIFI_OFF);   // 关闭网络
+    }
 }
 
 /*

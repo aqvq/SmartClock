@@ -1,8 +1,6 @@
 #include "sensors.h"
 
-#define DHTPIN 17
-#define DHTTYPE DHT11
-#define BUZPIN 26
+extern unsigned long initialized_time;
 DHT dht(DHTPIN, DHTTYPE);
 
 // ================================
@@ -46,6 +44,7 @@ void buzzer_init()
 
 void buzzer_start()
 {
+    initialized_time = millis();
     digitalWrite(BUZPIN, LOW);
 }
 
