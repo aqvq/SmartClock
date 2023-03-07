@@ -8,9 +8,9 @@
 #include <ESP32Encoder.h>
 
 // 管脚定义
-#define ENCODER_A 21
-#define ENCODER_C 18
-#define ENCODER_B 19
+#define ENCODER_CLK 19
+#define ENCODER_DT 21
+#define ENCODER_SW 18
 
 // 输入驱动初始化
 void input_init(void);

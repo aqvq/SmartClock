@@ -2,12 +2,13 @@
 
 #include "input.h"
 
-static ESP32Encoder encoder;
-static int32_t encoder_diff;
+static int64_t encoder_diff, encoder_position;
 static lv_indev_state_t encoder_state;
 lv_indev_t *indev_encoder;
 lv_indev_drv_t indev_drv;
 lv_group_t *group;
+int aState, aLastState;
+ESP32Encoder encoder;
 
 void input_init(void)
 {
@@ -26,31 +27,29 @@ void input_init(void)
 static void encoder_init(void)
 {
     /*Your code comes here*/
-    pinMode(ENCODER_A, INPUT_PULLUP);
-    pinMode(ENCODER_B, INPUT_PULLUP);
-    pinMode(ENCODER_C, INPUT_PULLUP);
-    encoder.attachHalfQuad(ENCODER_A, ENCODER_B);
+    encoder.attachHalfQuad(ENCODER_DT, ENCODER_CLK);
     encoder.setCount(0);
+    pinMode(ENCODER_SW, INPUT_PULLUP);
 }
 
 /*Will be called by the library to read the encoder*/
 static void encoder_read(lv_indev_drv_t *indev_drv, lv_indev_data_t *data)
 {
-    static long lastCount = 0;
-    long newCount = encoder.getCount() / 2;
-    // Serial.printf("\nencoder_count: %ld\n", newCount);
-    data->enc_diff = newCount - lastCount;
-    if (digitalRead(ENCODER_C) == LOW)
+    encoder_diff = encoder.getCount() - encoder_position;
+    encoder_position = encoder.getCount();
+    data->enc_diff = encoder_diff;
+
+    if (digitalRead(ENCODER_SW) == LOW)
     {
-        delay(10);
-        if (digitalRead(ENCODER_C) == LOW)
+        if (digitalRead(ENCODER_SW) == LOW)
         {
             encoder_state = LV_INDEV_STATE_PR;
         }
     }
     data->state = encoder_state;
-    lastCount = newCount;
+    // encoder_diff = 0;
     encoder_state = LV_INDEV_STATE_REL;
+    // Serial.printf("\nnew position: %d\n", encoder_position);
     // Serial.printf("\nenc_diff: %d\n", data->enc_diff);
     // Serial.printf("\nstate: %d\n", data->state);
 }
