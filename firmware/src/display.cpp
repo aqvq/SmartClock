@@ -75,7 +75,10 @@ void display_routine()
         ledcWrite(0, int(brightness * 4096));
     else
         ledcWrite(0, 4096);
+#else
+    ledcWrite(0, 4096);
 #endif
+
     lv_task_handler();
     // vTaskDelay(1);
 }

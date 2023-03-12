@@ -69,3 +69,5 @@
 - [Simulate IoT Projects in Your Browser](https://wokwi.com/)
 - [Arduino ESP32 ADC功能介绍以及模拟量信号读取示例](https://blog.csdn.net/weixin_42880082/article/details/121055405)
 - [五、ESP32使用PWM控制蜂鸣器](https://www.qutaojiao.com/1656.html)
+- [ESP32 – GPIO 引脚参考大全 – 凌顺实验室 (lingshunlab.com)](https://lingshunlab.com/book/esp32/esp32-pinout-reference)
+

@@ -17,11 +17,12 @@ static int last_minute = -1;
 static int last_hour = -1;
 float humidity = 0.0;
 float temperature = 0.0;
-struct tm timeinfo;
 int time_status;
 unsigned long initialized_time;
 uint8_t direction = FORWARD;
 uint8_t status = NOTSTART;
+extern RtcDS1302<ThreeWire> Rtc;
+RtcDateTime now;
 
 lv_obj_t *ui_Panel7;
 lv_obj_t *ui_Button199;
@@ -151,43 +152,62 @@ void ui_time_timer100(lv_timer_t *timer)
 {
     lv_obj_t **children = (lv_obj_t **)timer->user_data;
     dht_update(&humidity, &temperature);
-    getLocalTime(&timeinfo);
-    if (WiFi.status() == WL_CONNECTED)
+    // getLocalTime(&timeinfo);
+    now = Rtc.GetDateTime();
+    // if (WiFi.status() == WL_CONNECTED)
+    // {
+    if (now.IsValid())
     {
-        if (timeinfo.tm_year != 70)
-        {
-            if (time_status != NORMAL)
-                initialized_time = millis();
-            time_status = NORMAL;
-            sprintf(time_string, "%02d:%02d:%02d", timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec);
-            sprintf(date_string, "%04d年%02d月%02d日 %s", timeinfo.tm_year + 1900, timeinfo.tm_mon + 1, timeinfo.tm_mday, WDAY_NAMES[timeinfo.tm_wday]);
-            sprintf(humidity_string, "湿度: %2.1f%%", humidity);
-            sprintf(temperature_string, "温度: %2.1f°C", temperature);
-        }
-        else
-        {
-            if (time_status != SETTIME)
-            {
-                sprintf(time_string, "同步时间");
-                sprintf(date_string, "");
-                sprintf(humidity_string, "");
-                sprintf(temperature_string, "");
-                configTime(8 * 3600, 0, ntp_server);
-                time_status = SETTIME;
-            }
-        }
+        if (time_status != NORMAL)
+            initialized_time = millis();
+        time_status = NORMAL;
+        sprintf(time_string, "%02d:%02d:%02d", now.Hour(), now.Minute(), now.Second());
+        sprintf(date_string, "%04d年%02d月%02d日 %s", now.Year(), now.Month(), now.Day(), WDAY_NAMES[now.DayOfWeek()]);
+        sprintf(humidity_string, "湿度: %2.0f%%", humidity);
+        sprintf(temperature_string, "温度: %2.0f°C", temperature);
     }
     else
     {
-        if (time_status != NONET)
-        {
-            sprintf(time_string, "连接网络");
-            sprintf(date_string, "");
-            sprintf(humidity_string, "");
-            sprintf(temperature_string, "");
-            time_status = NONET;
-        }
+        sprintf(time_string, "时间错误");
+        sprintf(date_string, "");
+        sprintf(humidity_string, "");
+        sprintf(temperature_string, "");
     }
+
+    // if (timeinfo.tm_year != 70)
+    // {
+    //     if (time_status != NORMAL)
+    //         initialized_time = millis();
+    //     time_status = NORMAL;
+    //     sprintf(time_string, "%02d:%02d:%02d", now.Hour(), now.Minute(), now.Second());
+    //     sprintf(date_string, "%04d年%02d月%02d日 %s", timeinfo.tm_year + 1900, timeinfo.tm_mon + 1, timeinfo.tm_mday, WDAY_NAMES[timeinfo.tm_wday]);
+    //     sprintf(humidity_string, "湿度: %2.1f%%", humidity);
+    //     sprintf(temperature_string, "温度: %2.1f°C", temperature);
+    // }
+    // else
+    // {
+    //     if (time_status != SETTIME)
+    //     {
+    //         sprintf(time_string, "同步时间");
+    //         sprintf(date_string, "");
+    //         sprintf(humidity_string, "");
+    //         sprintf(temperature_string, "");
+    //         configTime(8 * 3600, 0, ntp_server);
+    //         time_status = SETTIME;
+    //     }
+    // }
+    // }
+    // else
+    // {
+    //     if (time_status != NONET)
+    //     {
+    //         sprintf(time_string, "连接网络");
+    //         sprintf(date_string, "");
+    //         sprintf(humidity_string, "");
+    //         sprintf(temperature_string, "");
+    //         time_status = NONET;
+    //     }
+    // }
     lv_label_set_text(children[0], time_string);
     lv_label_set_text(children[1], humidity_string);
     lv_label_set_text(children[2], temperature_string);
@@ -197,23 +217,23 @@ void ui_time_timer100(lv_timer_t *timer)
 void ui_time_timer120(lv_timer_t *timer)
 {
     // 计时部分
-    if ((status == WORKING) && (timeinfo.tm_sec != last_second || timeinfo.tm_min != last_minute || timeinfo.tm_hour != last_hour))
+    if ((status == WORKING) && (now.Second() != last_second || now.Minute() != last_minute || now.Hour() != last_hour))
     {
         if (direction == FORWARD)
             ui_count_inc();
         else
             ui_count_dec();
     }
-    last_second = timeinfo.tm_sec;
-    last_minute = timeinfo.tm_min;
-    last_hour = timeinfo.tm_hour;
+    last_second = now.Second();
+    last_minute = now.Minute();
+    last_hour = now.Hour();
 }
 
 void ui_time_timer500(lv_timer_t *timer)
 {
     // 整点报时
-    if (timeinfo.tm_sec == 0 && timeinfo.tm_min == 0)
-    // if (timeinfo.tm_sec == 0)
+    if (now.Second() == 0 && now.Minute() == 0)
+    // if (now.Second() == 0)
     {
         buzzer_ring(100);
     }
@@ -226,7 +246,7 @@ void ui_time_timer700(lv_timer_t *timer)
     {
         for (int j = 0; j < 60; ++j)
         {
-            if (clock_get(i, j) == true && timeinfo.tm_hour == i && timeinfo.tm_min == j && timeinfo.tm_sec < 3)
+            if (clock_get(i, j) == true && now.Hour() == i && now.Minute() == j && now.Second() < 3)
             {
                 buzzer_ring(200);
             }
@@ -711,8 +731,8 @@ void ui_clock_list_create_event(lv_event_t *event)
     ui_clock_create_init(ui_Panel6->parent);
     lv_obj_del(ui_Panel6);
 #endif
-    lv_roller_set_selected(ui_Roller1, timeinfo.tm_hour, LV_ANIM_ON);
-    lv_roller_set_selected(ui_Roller2, timeinfo.tm_min, LV_ANIM_ON);
+    lv_roller_set_selected(ui_Roller1, now.Hour(), LV_ANIM_ON);
+    lv_roller_set_selected(ui_Roller2, now.Minute(), LV_ANIM_ON);
 }
 
 void ui_clock_list_init(lv_obj_t *parent)
@@ -766,7 +786,8 @@ void ui_clock_list_init(lv_obj_t *parent)
 void ui_time_timer_update_time(lv_timer_t *timer)
 {
     if (WiFi.status() == WL_CONNECTED)
-        configTime(8 * 3600, 0, ntp_server);
+        // configTime(8 * 3600, 0, ntp_server);
+        rtc_sync_time();
 }
 
 void ui_time_init(lv_obj_t *parent)

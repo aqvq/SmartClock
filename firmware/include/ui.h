@@ -1,5 +1,5 @@
-// UI渲染与控制逻辑模块
 // 是本项目的核心模块
+// UI渲染与控制逻辑模块
 
 #ifndef SHANG_PAGES_H
 #define SHANG_PAGES_H
@@ -10,6 +10,7 @@
 #include "sensors.h"
 #include "input.h"
 #include "clock.h"
+#include "ds1302.h"
 
 // 定义状态常量
 enum

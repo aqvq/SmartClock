@@ -5,6 +5,7 @@
         "clock_create.h": "c",
         "pages.h": "c",
         "lvgl.h": "c",
-        "sensors.h": "c"
+        "sensors.h": "c",
+        "random": "cpp"
     }
 }
