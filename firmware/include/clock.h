@@ -8,6 +8,12 @@
 #include <bitset>
 #include "conf.h"
 
+typedef struct
+{
+    uint8_t bright;
+    uint8_t audio;
+} StoredConfig;
+
 // 初始化文件系统
 void clock_init();
 // 从文件中读取所有数据
@@ -20,5 +26,6 @@ void clock_set(int i, int j);
 void clock_reset(int i, int j);
 // 获取某一时刻的闹钟的状态
 bool clock_get(int i, int j);
-
+void config_read_all();
+void config_save_all();
 #endif

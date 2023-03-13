@@ -1,7 +1,7 @@
 ========lv_chinese_20========
 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz {|}~
 确认取消添加重置删除继续 °时间闹钟倒计时正年月日一二三四五六七八九十星期周日天温度湿度：返回设置开始暂停止
-请连接本设备WiFi配置网络
+请连接本设备WiFi配置网络时分秒声音亮度量
 
 ========lv_chinese_48========
 正在加载中连接WiFiLOADINGloading: 0123456789 

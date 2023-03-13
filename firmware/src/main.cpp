@@ -1,5 +1,6 @@
 // 主模块
 
+#include <Arduino.h>
 #include "conf.h"
 #include "display.h"
 #include "network.h"

@@ -63,5 +63,8 @@ void ui_clock_list_create_event(lv_event_t *event);
 void ui_clock_list_init(lv_obj_t *parent);
 // 时间首页初始化
 void ui_time_init(lv_obj_t *parent);
-
+// 设置首页初始化
+void ui_settings_init(lv_obj_t *parent);
+void slider_event_bright_cb(lv_event_t *e);
+void slider_event_audio_cb(lv_event_t *e);
 #endif
