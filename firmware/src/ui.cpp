@@ -181,13 +181,23 @@ void ui_time_timer100(lv_timer_t *timer)
     // {
     if (now.IsValid())
     {
-        if (time_status != NORMAL)
-            initialized_time = millis();
-        time_status = NORMAL;
-        sprintf(time_string, "%02d:%02d:%02d", now.Hour(), now.Minute(), now.Second());
-        sprintf(date_string, "%04d年%02d月%02d日 %s", now.Year(), now.Month(), now.Day(), WDAY_NAMES[now.DayOfWeek()]);
-        sprintf(humidity_string, "湿度: %2.0f%%", humidity);
-        sprintf(temperature_string, "温度: %2.0f°C", temperature);
+        if (WiFi.status() != WL_CONNECTED || sync_time != 0)
+        {
+            if (time_status != NORMAL)
+                initialized_time = millis();
+            time_status = NORMAL;
+            sprintf(time_string, "%02d:%02d:%02d", now.Hour(), now.Minute(), now.Second());
+            sprintf(date_string, "%04d年%02d月%02d日 %s", now.Year(), now.Month(), now.Day(), WDAY_NAMES[now.DayOfWeek()]);
+            sprintf(humidity_string, "湿度: %2.0f%%", humidity);
+            sprintf(temperature_string, "温度: %2.0f°C", temperature);
+        }
+        else
+        {
+            sprintf(time_string, "连接网络");
+            sprintf(date_string, "");
+            sprintf(humidity_string, "");
+            sprintf(temperature_string, "");
+        }
     }
     else
     {
