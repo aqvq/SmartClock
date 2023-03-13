@@ -15,5 +15,5 @@
 void display_init();
 // LVGL日常任务执行
 void display_routine();
-
+void display_task(void *p);
 #endif

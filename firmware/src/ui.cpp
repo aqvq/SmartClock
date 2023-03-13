@@ -24,6 +24,8 @@ uint8_t status = NOTSTART;
 extern RtcDS1302<ThreeWire> Rtc;
 RtcDateTime now;
 extern StoredConfig stored_config;
+extern bool first_sync;
+extern unsigned long sync_time;
 
 lv_obj_t *ui_Panel7;
 lv_obj_t *ui_Panel1;
@@ -238,6 +240,7 @@ void ui_time_timer100(lv_timer_t *timer)
 void ui_time_timer120(lv_timer_t *timer)
 {
     // 计时部分
+    now = Rtc.GetDateTime();
     if ((status == WORKING) && (now.Second() != last_second || now.Minute() != last_minute || now.Hour() != last_hour))
     {
         if (direction == FORWARD)
@@ -252,6 +255,7 @@ void ui_time_timer120(lv_timer_t *timer)
 
 void ui_time_timer500(lv_timer_t *timer)
 {
+    now = Rtc.GetDateTime();
     // 整点报时
     if (now.Second() == 0 && now.Minute() == 0)
     // if (now.Second() == 0)
@@ -262,6 +266,7 @@ void ui_time_timer500(lv_timer_t *timer)
 
 void ui_time_timer700(lv_timer_t *timer)
 {
+    now = Rtc.GetDateTime();
     // 闹铃功能
     for (int i = 0; i < 24; ++i)
     {
@@ -733,7 +738,6 @@ void ui_clock_list_init(lv_obj_t *parent)
     lv_obj_set_style_text_align(ui_Label12, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_Label12, &lv_chinese_20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    clock_init();
     clock_read_all();
     for (int i = 0; i < 24; ++i)
     {
@@ -747,13 +751,6 @@ void ui_clock_list_init(lv_obj_t *parent)
     }
 
     lv_obj_add_event_cb(ui_Button6, ui_clock_list_create_event, LV_EVENT_CLICKED, NULL);
-}
-
-void ui_time_timer_update_time(lv_timer_t *timer)
-{
-    if (WiFi.status() == WL_CONNECTED)
-        // configTime(8 * 3600, 0, ntp_server);
-        rtc_sync_time();
 }
 
 void ui_time_init(lv_obj_t *parent)
@@ -830,13 +827,18 @@ void ui_time_init(lv_obj_t *parent)
     lv_obj_set_style_outline_opa(ui_Button9, 255, LV_PART_MAIN | LV_STATE_FOCUSED);
     lv_obj_set_style_shadow_color(ui_Button9, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_FOCUSED);
     lv_obj_set_style_shadow_opa(ui_Button9, 255, LV_PART_MAIN | LV_STATE_FOCUSED);
+    lv_obj_add_event_cb(ui_Button9, ui_time_sync_time_cb, LV_EVENT_CLICKED, NULL);
 
     static lv_obj_t *ui_time_obj_children[4] = {ui_Label19, ui_Label18, ui_Label16, ui_Label20};
     lv_timer_t *timer1 = lv_timer_create(ui_time_timer100, 100, ui_time_obj_children);
     lv_timer_t *timer2 = lv_timer_create(ui_time_timer120, 120, NULL);
     lv_timer_t *timer3 = lv_timer_create(ui_time_timer500, 500, NULL);
     lv_timer_t *timer4 = lv_timer_create(ui_time_timer700, 700, NULL);
-    lv_timer_t *timer5 = lv_timer_create(ui_time_timer_update_time, update_time_period, NULL);
+}
+
+void ui_time_sync_time_cb(lv_event_t *e)
+{
+    first_sync = false;
 }
 
 void ui_settings_init(lv_obj_t *parent)
@@ -880,7 +882,7 @@ void ui_settings_init(lv_obj_t *parent)
     lv_obj_set_style_pad_bottom(ui_Panel3131, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_Roller2131 = lv_roller_create(ui_Panel2131);
-    lv_roller_set_options(ui_Roller2131, "2021\n2022\n2023", LV_ROLLER_MODE_NORMAL);
+    // lv_roller_set_options(ui_Roller2131, "2021\n2022\n2023\n2024\n2025", LV_ROLLER_MODE_NORMAL);
     lv_obj_set_width(ui_Roller2131, 55);
     lv_obj_set_height(ui_Roller2131, 30);
     lv_obj_set_align(ui_Roller2131, LV_ALIGN_CENTER);
@@ -1107,6 +1109,26 @@ void ui_settings_init(lv_obj_t *parent)
 
     lv_slider_set_value(ui_Slider2131, stored_config.bright, LV_ANIM_OFF);
     lv_obj_add_event_cb(ui_Slider2131, slider_event_bright_cb, LV_EVENT_VALUE_CHANGED, NULL);
+
+    // 将时间设为最近
+    now = Rtc.GetDateTime();
+    char years_buf[100] = {0};
+    int year = now.Year();
+    snprintf(years_buf, 100, "%04d\n%04d\n%04d\n%04d\n%04d\n%04d\n%04d\n%04d\n%04d\n%04d\n%04d", year - 5, year - 4, year - 3, year - 2, year - 1, year, year + 1, year + 2, year + 3, year + 4, year + 5);
+    lv_roller_set_options(ui_Roller2131, years_buf, LV_ROLLER_MODE_NORMAL);
+    lv_roller_set_selected(ui_Roller2131, 5, LV_ANIM_OFF);
+    lv_roller_set_selected(ui_Roller7131, now.Month() - 1, LV_ANIM_OFF);
+    lv_roller_set_selected(ui_Roller8131, now.Day() - 1, LV_ANIM_OFF);
+    lv_roller_set_selected(ui_Roller1131, now.Hour(), LV_ANIM_OFF);
+    lv_roller_set_selected(ui_Roller3131, now.Minute(), LV_ANIM_OFF);
+    lv_roller_set_selected(ui_Roller9131, now.Second(), LV_ANIM_OFF);
+
+    lv_obj_add_event_cb(ui_Roller2131, roller_set_time_year_cb, LV_EVENT_VALUE_CHANGED, NULL);
+    lv_obj_add_event_cb(ui_Roller7131, roller_set_time_month_cb, LV_EVENT_VALUE_CHANGED, NULL);
+    lv_obj_add_event_cb(ui_Roller8131, roller_set_time_day_cb, LV_EVENT_VALUE_CHANGED, NULL);
+    lv_obj_add_event_cb(ui_Roller1131, roller_set_time_hour_cb, LV_EVENT_VALUE_CHANGED, NULL);
+    lv_obj_add_event_cb(ui_Roller3131, roller_set_time_minute_cb, LV_EVENT_VALUE_CHANGED, NULL);
+    lv_obj_add_event_cb(ui_Roller9131, roller_set_time_second_cb, LV_EVENT_VALUE_CHANGED, NULL);
 }
 
 void slider_event_bright_cb(lv_event_t *e)
@@ -1121,4 +1143,48 @@ void slider_event_audio_cb(lv_event_t *e)
     lv_obj_t *slider = lv_event_get_target(e);
     stored_config.audio = (int)lv_slider_get_value(slider);
     config_save_all();
+}
+
+void roller_set_time_year_cb(lv_event_t *e)
+{
+    lv_obj_t *obj = lv_event_get_target(e);
+    char years_buf[100] = {0};
+    lv_roller_get_selected_str(obj, years_buf, 100);
+    int year = atoi(years_buf);
+    snprintf(years_buf, 100, "%04d\n%04d\n%04d\n%04d\n%04d\n%04d\n%04d\n%04d\n%04d\n%04d\n%04d", year - 5, year - 4, year - 3, year - 2, year - 1, year, year + 1, year + 2, year + 3, year + 4, year + 5);
+    lv_roller_set_options(ui_Roller2131, years_buf, LV_ROLLER_MODE_NORMAL);
+    lv_roller_set_selected(ui_Roller2131, 5, LV_ANIM_OFF);
+
+    RtcDateTime sync_time(year, now.Month(), now.Day(), now.Hour(), now.Minute(), now.Second());
+    Rtc.SetDateTime(sync_time);
+}
+
+void roller_set_time_month_cb(lv_event_t *e)
+{
+    RtcDateTime sync_time(now.Year(), lv_roller_get_selected(ui_Roller7131) + 1, now.Day(), now.Hour(), now.Minute(), now.Second());
+    Rtc.SetDateTime(sync_time);
+}
+
+void roller_set_time_day_cb(lv_event_t *e)
+{
+    RtcDateTime sync_time(now.Year(), now.Month(), lv_roller_get_selected(ui_Roller8131) + 1, now.Hour(), now.Minute(), now.Second());
+    Rtc.SetDateTime(sync_time);
+}
+
+void roller_set_time_hour_cb(lv_event_t *e)
+{
+    RtcDateTime sync_time(now.Year(), now.Month(), now.Day(), lv_roller_get_selected(ui_Roller1131), now.Minute(), now.Second());
+    Rtc.SetDateTime(sync_time);
+}
+
+void roller_set_time_minute_cb(lv_event_t *e)
+{
+    RtcDateTime sync_time(now.Year(), now.Month(), now.Day(), now.Hour(), lv_roller_get_selected(ui_Roller3131), now.Second());
+    Rtc.SetDateTime(sync_time);
+}
+
+void roller_set_time_second_cb(lv_event_t *e)
+{
+    RtcDateTime sync_time(now.Year(), now.Month(), now.Day(), now.Hour(), now.Minute(), lv_roller_get_selected(ui_Roller9131));
+    Rtc.SetDateTime(sync_time);
 }

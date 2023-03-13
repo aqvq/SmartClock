@@ -12,6 +12,5 @@
 // void printDateTime(const RtcDateTime &dt);
 void rtc_init();
 void rtc_routine();
-void rtc_sync_time();
 
 #endif

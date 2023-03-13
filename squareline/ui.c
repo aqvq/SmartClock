@@ -81,7 +81,9 @@ void ui_Screen1_screen_init(void)
     lv_obj_set_style_pad_column(ui_Panel2131, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_Roller2131 = lv_roller_create(ui_Panel2131);
-    lv_roller_set_options(ui_Roller2131, "2021\n2022\n2023", LV_ROLLER_MODE_NORMAL);
+    lv_roller_set_options(ui_Roller2131,
+                          "2020\n2021\n2022\n2023\n2024\n2025\n2026\n2027\n2028\n2029\n2030\n2031\n2032\n2033\n2034\n2035\n2036\n2037\n2038\n2039\n2040\n2041\n2042\n2043\n2044\n2045\n2046\n2047\n2048\n2049\n2050",
+                          LV_ROLLER_MODE_NORMAL);
     lv_obj_set_width(ui_Roller2131, 55);
     lv_obj_set_height(ui_Roller2131, 30);
     lv_obj_set_align(ui_Roller2131, LV_ALIGN_CENTER);
@@ -141,7 +143,7 @@ void ui_Screen1_screen_init(void)
     lv_obj_set_style_text_font(ui_Label3131, &ui_font_chinese, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_Panel6131 = lv_obj_create(ui_Panel3131);
-    lv_obj_set_height(ui_Panel6131, 40);
+    lv_obj_set_height(ui_Panel6131, 50);
     lv_obj_set_width(ui_Panel6131, lv_pct(100));
     lv_obj_set_x(ui_Panel6131, 3);
     lv_obj_set_y(ui_Panel6131, -78);
@@ -151,8 +153,15 @@ void ui_Screen1_screen_init(void)
     lv_obj_clear_flag(ui_Panel6131, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_border_color(ui_Panel6131, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_opa(ui_Panel6131, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_row(ui_Panel6131, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_column(ui_Panel6131, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui_Panel6131, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_Panel6131, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_Panel6131, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_Panel6131, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    lv_obj_set_style_pad_left(ui_Panel6131, 0, LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui_Panel6131, 0, LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui_Panel6131, 0, LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui_Panel6131, 0, LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
 
     ui_Roller1131 = lv_roller_create(ui_Panel6131);
     lv_roller_set_options(ui_Roller1131, "20\n21\n22", LV_ROLLER_MODE_NORMAL);

@@ -13,8 +13,11 @@ static unsigned long timePressed = 0;
 DNSServer dnsServer;       // 创建dnsServer实例
 WebServer server(webPort); // 开启web服务, 创建TCP SERVER,参数: 端口号,最大连接数
 const int resetPin = 13;   // 设置重置按键引脚,用于删除WiFi信息
+bool first_sync = false;
+unsigned long sync_time;
+extern RtcDS1302<ThreeWire> Rtc;
 
-#define ROOT_HTML "<!DOCTYPE html><html><head><title>WIFI</title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"></head><style type=\"text/css\">.input {display: block;margin-top: 10px;}.input span {width: 100px;float: left;float: left;height: 36px;line-height: 36px;}.input input {height: 30px;width: 200px;}.btn {width: 120px;height: 35px;background-color: #000000;border: 0px;color: #ffffff;margin-top: 15px;margin-left: 100px;}form {display: flex;flex-direction: column;align-items: center;}</style><body><form method=\"POST\" action=\"configwifi\"><label class=\"input\"><span>WiFi名称</span><input type=\"text\" name=\"ssid\" placeholder=\"请输入WiFi名称\" required oninvalid=\"validate('WiFi名称不能为空')\"></label><label class=\"input\"><span>WiFi密码</span><input type=\"password\" name=\"pass\" placeholder=\"请输入WiFi密码\" required oninvalid=\"validate('请输入至少8位的密码')\"></label><input class=\"btn\" type=\"submit\" name=\"submit\" value=\"连接\"><p class=\"near\"><br><span> 附近的WiFi </span></p>"
+#define ROOT_HTML "<!DOCTYPE html><html><head><title>WIFI</title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"></head><style type=\"text/css\">.input {display: block;margin-top: 10px;}.input span {width: 100px;float: left;float: left;height: 36px;line-height: 36px;}.input input {height: 30px;width: 200px;}.btn {width: 120px;height: 35px;background-color: #000000;border: 0px;color: #ffffff;margin-top: 15px;margin-left: 100px;}form {display: flex;flex-direction: column;align-items: center;}</style><body><form method=\"POST\" action=\"configwifi\"><label class=\"input\"><span>WiFi名称</span><input type=\"text\" name=\"ssid\" placeholder=\"请输入WiFi名称\" required oninvalid=\"validate('WiFi名称不能为空')\"></label><label class=\"input\"><span>WiFi密码</span><input type=\"password\" name=\"pass\" placeholder=\"请输入WiFi密码\"></label><input class=\"btn\" type=\"submit\" name=\"submit\" value=\"连接\"><p class=\"near\"><br><span> 附近的WiFi </span></p>"
 
 /*
  * 重置设备
@@ -68,6 +71,16 @@ void network_routine()
     // 监听网络状态
     checkDNS_HTTP(); // 检测客户端DNS&HTTP请求，也就是检查配网页面那部分
     checkConnect();  // 检测网络连接状态，参数true表示如果断开重新连接
+    if (!first_sync && WiFi.status() == WL_CONNECTED)
+    {
+        first_sync = true;
+        config_ntp_time();
+        sync_time = millis();
+    }
+    if (WiFi.status() != WL_CONNECTED || (millis() - sync_time >= 1000 * 60 * 60))
+    {
+        first_sync = false;
+    }
 }
 
 void closeWiFi()
@@ -270,7 +283,6 @@ void connect_wifi_init()
         Serial.println("Connecting by nvs data.");
         WiFi.begin(); // begin()不传入参数，默认连接上一次连接成功的wifi
     }
-
     if (WiFi.status() == WL_CONNECTED) // 如果连接成功
     {
         Serial.println("WIFI connect Success");
@@ -283,9 +295,11 @@ void connect_wifi_init()
         Serial.print("WIFI status is:");
         Serial.print(WiFi.status());
         digitalWrite(LED, HIGH);
-        server.stop(); // 停止开发板所建立的网络服务器。
+        if (wifi_ssid != "")
+            server.stop(); // 停止开发板所建立的网络服务器。
+        // WiFi在另一个线程中执行，不一定恰好在此处时已连接
         // configTime(8 * 3600, 0, ntp_server);
-        rtc_sync_time();
+        // rtc_sync_time();
     }
 }
 
@@ -296,7 +310,7 @@ void connect_wifi_config()
 {
     Serial.println(""); // 主要目的是为了换行符
     Serial.println("WIFI auto connection failed, starting AP for web configuration now...");
-    blinkLED(LED, 1, 200); // LED闪烁5次         //关于LED，不需要可删除
+    blinkLED(LED, 3, 200); // LED闪烁
     // digitalWrite(LED, LOW); // 关于LED，不需要可删除
     wifiConfig(); // 开始配网功能
 }
@@ -355,7 +369,7 @@ void connectToWiFi(int timeOut_s)
         digitalWrite(LED, HIGH);
         server.stop(); // 停止开发板所建立的网络服务器。
         // configTime(8 * 3600, 0, ntp_server);
-        rtc_sync_time();
+        // rtc_sync_time();
     }
 }
 
@@ -432,4 +446,19 @@ void checkDNS_HTTP()
 {
     dnsServer.processNextRequest(); // 检查客户端DNS请求
     server.handleClient();          // 检查客户端(浏览器)http请求
+}
+
+void config_ntp_time()
+{
+    if (WiFi.status() == WL_CONNECTED)
+    {
+        struct tm timeinfo;
+        configTime(8 * 3600, 0, ntp_server);
+        getLocalTime(&timeinfo);
+        if (timeinfo.tm_year != 70)
+        {
+            RtcDateTime sync_time(timeinfo.tm_year + 1900, timeinfo.tm_mon + 1, timeinfo.tm_mday, timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec);
+            Rtc.SetDateTime(sync_time);
+        }
+    }
 }

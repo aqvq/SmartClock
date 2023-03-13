@@ -67,4 +67,12 @@ void ui_time_init(lv_obj_t *parent);
 void ui_settings_init(lv_obj_t *parent);
 void slider_event_bright_cb(lv_event_t *e);
 void slider_event_audio_cb(lv_event_t *e);
+void roller_set_time_year_cb(lv_event_t *e);
+void roller_set_time_month_cb(lv_event_t *e);
+void roller_set_time_day_cb(lv_event_t *e);
+void roller_set_time_hour_cb(lv_event_t *e);
+void roller_set_time_minute_cb(lv_event_t *e);
+void roller_set_time_second_cb(lv_event_t *e);
+void ui_time_sync_time_cb(lv_event_t *e);
+
 #endif

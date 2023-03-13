@@ -67,7 +67,6 @@ void display_init(void)
     ui_settings_init(tab_settings);
     // 加载屏幕
     lv_scr_load(screen);
-    display_routine();
 }
 
 void display_routine()
@@ -81,6 +80,6 @@ void display_routine()
     ledcWrite(0, (int)(stored_config.bright / 100.0 * 4096));
 #endif
 
-    lv_task_handler();
     // vTaskDelay(1);
+    lv_task_handler();
 }
