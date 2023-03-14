@@ -262,10 +262,6 @@ void ui_time_timer120(lv_timer_t *timer)
     last_hour = now.Hour();
 }
 
-void ui_time_timer500(lv_timer_t *timer)
-{
-}
-
 void ui_time_timer800(lv_timer_t *timer)
 {
     now = Rtc.GetDateTime();
@@ -841,7 +837,6 @@ void ui_time_init(lv_obj_t *parent)
     static lv_obj_t *ui_time_obj_children[4] = {ui_Label19, ui_Label18, ui_Label16, ui_Label20};
     lv_timer_t *timer1 = lv_timer_create(ui_time_timer100, 100, ui_time_obj_children);
     lv_timer_t *timer2 = lv_timer_create(ui_time_timer120, 120, NULL);
-    // lv_timer_t *timer3 = lv_timer_create(ui_time_timer500, 500, NULL);
     lv_timer_t *timer4 = lv_timer_create(ui_time_timer800, 800, NULL);
 }
 

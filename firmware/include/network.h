@@ -37,6 +37,6 @@ bool scanWiFi();                      // 扫描附近的WiFi，为了显示在�
 void wifiConfig();                    // 配置配网功能
 void reset_device();                  // 重置设备
 void blinkLED(int led, int n, int t); // LED闪烁函数        //用不上LED可删除
-void config_ntp_time();
+void config_ntp_time();               // 同步网络时间
 
 #endif

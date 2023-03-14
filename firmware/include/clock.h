@@ -26,6 +26,8 @@ void clock_set(int i, int j);
 void clock_reset(int i, int j);
 // 获取某一时刻的闹钟的状态
 bool clock_get(int i, int j);
+// 读取配置信息（主要为音量、屏幕亮度）
 void config_read_all();
+// 保存配置信息（主要为音量、屏幕亮度）
 void config_save_all();
 #endif

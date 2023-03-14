@@ -36,9 +36,7 @@ void ui_count_dec();
 void ui_time_timer100(lv_timer_t *timer);
 // 定时器计时逻辑
 void ui_time_timer120(lv_timer_t *timer);
-// 整点报时逻辑
-// void ui_time_timer500(lv_timer_t *timer);
-// 闹钟响铃逻辑
+// 闹钟响铃与整点报时逻辑
 void ui_time_timer800(lv_timer_t *timer);
 // 创建闹钟页面按下取消按钮事件
 void ui_clock_create_cancel_event(lv_event_t *event);
@@ -66,14 +64,23 @@ void ui_clock_list_init(lv_obj_t *parent);
 void ui_time_init(lv_obj_t *parent);
 // 设置首页初始化
 void ui_settings_init(lv_obj_t *parent);
+// 屏幕亮度调节滑块同步事件
 void slider_event_bright_cb(lv_event_t *e);
+// 音量调节滑块同步事件
 void slider_event_audio_cb(lv_event_t *e);
+// 设置时间
 void roller_set_time_year_cb(lv_event_t *e);
+// 设置时间
 void roller_set_time_month_cb(lv_event_t *e);
+// 设置时间
 void roller_set_time_day_cb(lv_event_t *e);
+// 设置时间
 void roller_set_time_hour_cb(lv_event_t *e);
+// 设置时间
 void roller_set_time_minute_cb(lv_event_t *e);
+// 设置时间
 void roller_set_time_second_cb(lv_event_t *e);
+// 手动同步网络时间
 void ui_time_sync_time_cb(lv_event_t *e);
 
 #endif
