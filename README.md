@@ -71,3 +71,5 @@
 - [五、ESP32使用PWM控制蜂鸣器](https://www.qutaojiao.com/1656.html)
 - [ESP32 – GPIO 引脚参考大全 – 凌顺实验室 (lingshunlab.com)](https://lingshunlab.com/book/esp32/esp32-pinout-reference)
 - [Arduino运行FreeRTOS操作系统_TonyIOT的博客-CSDN博客](https://blog.csdn.net/TonyIOT/article/details/105728225)
+- [创客 ESP32 Arduino 指南- Serial, Serial1, Serial2 注意事项 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/79911193)
+- [DFPlayer Mini 播放器模块_DFR0299_产品说明_使用教程 (dfrobot.com.cn)](https://wiki.dfrobot.com.cn/_SKU_DFR0299_DFPlayer_Mini模块#target_0)

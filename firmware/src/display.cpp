@@ -56,15 +56,15 @@ void display_init(void)
 
     lv_obj_t *tab_time = lv_tabview_add_tab(tabview, "时间");
     lv_obj_t *tab_count = lv_tabview_add_tab(tabview, "计时");
-    lv_obj_t *tab_clock = lv_tabview_add_tab(tabview, "闹钟");
     lv_obj_t *tab_settings = lv_tabview_add_tab(tabview, "设置");
+    lv_obj_t *tab_clock = lv_tabview_add_tab(tabview, "闹钟");
 
     // 初始化控件
     ui_time_init(tab_time);
     ui_count_init(tab_count);
+    ui_settings_init(tab_settings);
     ui_clock_list_init(tab_clock);
     ui_clock_create_init(tab_clock);
-    ui_settings_init(tab_settings);
     // 加载屏幕
     lv_scr_load(screen);
 }

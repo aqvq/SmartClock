@@ -1,6 +1,6 @@
 #include "ds1302.h"
 
-ThreeWire myWire(4, 2, 1); // IO, SCLK, CE
+ThreeWire myWire(4, 2, 23); // IO, SCLK, CE  // ???
 RtcDS1302<ThreeWire> Rtc(myWire);
 
 void rtc_init()

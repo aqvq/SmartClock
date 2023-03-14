@@ -26,6 +26,7 @@ RtcDateTime now;
 extern StoredConfig stored_config;
 extern bool first_sync;
 extern unsigned long sync_time;
+extern DFRobotDFPlayerMini myDFPlayer;
 
 lv_obj_t *ui_Panel7;
 lv_obj_t *ui_Panel1;
@@ -148,9 +149,7 @@ void ui_count_dec()
                 Serial.println("UI COUNT DEC COMPLETE!!!");
                 status = NOTSTART;
                 ui_count_reset();
-                buzzer_ring(100);
-                delay(100);
-                buzzer_ring(500);
+                myDFPlayer.playFolder(1, 1);
             }
             else
             {
@@ -265,16 +264,9 @@ void ui_time_timer120(lv_timer_t *timer)
 
 void ui_time_timer500(lv_timer_t *timer)
 {
-    now = Rtc.GetDateTime();
-    // 整点报时
-    if (now.Second() == 0 && now.Minute() == 0)
-    // if (now.Second() == 0)
-    {
-        buzzer_ring(100);
-    }
 }
 
-void ui_time_timer700(lv_timer_t *timer)
+void ui_time_timer800(lv_timer_t *timer)
 {
     now = Rtc.GetDateTime();
     // 闹铃功能
@@ -282,11 +274,18 @@ void ui_time_timer700(lv_timer_t *timer)
     {
         for (int j = 0; j < 60; ++j)
         {
-            if (clock_get(i, j) == true && now.Hour() == i && now.Minute() == j && now.Second() < 3)
+            if (clock_get(i, j) == true && now.Hour() == i && now.Minute() == j && now.Second() == 0)
             {
-                buzzer_ring(200);
+                myDFPlayer.playFolder(1, 2);
             }
         }
+    }
+
+    // 整点报时
+    if (now.Second() == 0 && now.Minute() == 0)
+    // if (now.Second() == 0)
+    {
+        myDFPlayer.advertise(now.Hour());
     }
 }
 
@@ -842,8 +841,8 @@ void ui_time_init(lv_obj_t *parent)
     static lv_obj_t *ui_time_obj_children[4] = {ui_Label19, ui_Label18, ui_Label16, ui_Label20};
     lv_timer_t *timer1 = lv_timer_create(ui_time_timer100, 100, ui_time_obj_children);
     lv_timer_t *timer2 = lv_timer_create(ui_time_timer120, 120, NULL);
-    lv_timer_t *timer3 = lv_timer_create(ui_time_timer500, 500, NULL);
-    lv_timer_t *timer4 = lv_timer_create(ui_time_timer700, 700, NULL);
+    // lv_timer_t *timer3 = lv_timer_create(ui_time_timer500, 500, NULL);
+    lv_timer_t *timer4 = lv_timer_create(ui_time_timer800, 800, NULL);
 }
 
 void ui_time_sync_time_cb(lv_event_t *e)
@@ -1080,6 +1079,7 @@ void ui_settings_init(lv_obj_t *parent)
     lv_obj_set_align(ui_Slider3131, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_Slider3131, LV_OBJ_FLAG_SCROLL_ON_FOCUS); /// Flags
     lv_obj_clear_flag(ui_Slider3131, LV_OBJ_FLAG_SCROLLABLE);    /// Flags
+    lv_slider_set_range(ui_Slider3131, 0, 30);
 
     ui_Panel1131 = lv_obj_create(ui_Panel3131);
     lv_obj_set_height(ui_Panel1131, 35);
@@ -1152,6 +1152,7 @@ void slider_event_audio_cb(lv_event_t *e)
 {
     lv_obj_t *slider = lv_event_get_target(e);
     stored_config.audio = (int)lv_slider_get_value(slider);
+    myDFPlayer.volume(stored_config.audio);
     config_save_all();
 }
 

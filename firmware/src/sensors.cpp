@@ -32,30 +32,3 @@ void dht_update(float *humidity, float *temperature)
     *humidity = h;
     *temperature = t;
 }
-
-// ================================
-// 蜂鸣器部分
-// ================================
-void buzzer_init()
-{
-    pinMode(BUZPIN, OUTPUT);
-    digitalWrite(BUZPIN, HIGH);
-}
-
-void buzzer_start()
-{
-    initialized_time = millis();
-    digitalWrite(BUZPIN, LOW);
-}
-
-void buzzer_stop()
-{
-    digitalWrite(BUZPIN, HIGH);
-}
-
-void buzzer_ring(uint16_t time)
-{
-    buzzer_start();
-    delay(time);
-    buzzer_stop();
-}
