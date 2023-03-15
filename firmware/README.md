@@ -29,6 +29,9 @@
 5. 焊接PCB与组装硬件
 
 ## 配置要求
+
+> 如果从官方渠道下载依赖库，需要修改配置方可正常工作
+
 1. 将配置文件`include/User_Setup.h`覆盖库`TFT_eSPI`中的同名文件
 2. 将配置文件`include/lv_conf.h`覆盖库`lvgl`中的同名文件
 3. 将库`DHT sensor library`中的文件`DHT_U.cpp`和`DHT_U.h`删除，否则会报错
@@ -38,7 +41,6 @@
 > 更详细的项目逻辑解释在源代码的注释中
 
 - /include 程序头文件
-- /lib 程序所需的库
 - /src 程序源代码
   - main.cpp 主程序
   - network.cpp 网络配置模块
@@ -51,6 +53,17 @@
   - ds1302.cpp 本地时钟模块
   - /fonts 汉字字库
   - /audio 语音文件
+- /lib 程序所需的库
+  - Adafruit Unified Sensor 传感器驱动
+  - DFRobotDFPlayerMini 音频驱动
+  - DHT sensor library 温湿度传感器驱动
+  - ESP32Encoder 旋转编码器驱动
+  - lvgl 图形界面驱动
+  - RTC 本地实时时钟驱动
+  - TaskScheduler 任务调度模块
+  - TFT_eSPI 显示屏驱动
+  - Unity 集成测试模块
+
 
 
 ## 技术总结
@@ -59,3 +72,4 @@
 - 如何将闹钟信息存储在非易失性存储区中？
 - 如何设置网络模块，实现一件配网功能？
 - 如何更好的提升操作体验，如何设计UI界面？如何配置旋转编码器？
+- 尝试将ESP32通过Blinker接入米家，实现手机端同步温湿度数据？
