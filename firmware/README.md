@@ -19,6 +19,7 @@
 - 实现闹钟数据与配置数据的存储与读取功能
 - 实现网络重置按钮和网络指示灯
 - 实现调节亮度和音量功能
+- 实现温湿度数据上传至手机
 
 ## 安装过程
 
@@ -35,6 +36,7 @@
 1. 将配置文件`include/User_Setup.h`覆盖库`TFT_eSPI`中的同名文件
 2. 将配置文件`include/lv_conf.h`覆盖库`lvgl`中的同名文件
 3. 将库`DHT sensor library`中的文件`DHT_U.cpp`和`DHT_U.h`删除，否则会报错
+4. 要实现`温湿度数据上传至手机`需要下载`Blinker`APP，并将`ENABLE_BLINKER`设置为1，将`blinker_auth`改为自己的设备KEY
 
 ## 文件结构
 
@@ -51,6 +53,7 @@
   - sensors.cpp 传感器模块
   - clock.cpp 闹钟与配置数据处理模块
   - ds1302.cpp 本地时钟模块
+  - cloud.cpp 数据上传模块
   - /fonts 汉字字库
   - /audio 语音文件
 - /lib 程序所需的库
@@ -63,6 +66,7 @@
   - TaskScheduler 任务调度模块
   - TFT_eSPI 显示屏驱动
   - Unity 集成测试模块
+  - Blinker IoT模块
 
 
 

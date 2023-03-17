@@ -71,15 +71,8 @@ void display_init(void)
 
 void display_routine()
 {
-#if ENABLE_SLEEP
-    if (time_status == NORMAL && status == NOTSTART && lv_disp_get_inactive_time(NULL) > sleep_time && millis() - initialized_time > sleep_time)
-        ledcWrite(0, int(brightness * 4096));
-    else
-        ledcWrite(0, 4096);
-#else
-    ledcWrite(0, (int)(stored_config.bright / 100.0 * 4096));
-#endif
 
+    ledcWrite(0, (int)(stored_config.bright / 100.0 * 4096));
     // vTaskDelay(1);
     lv_task_handler();
 }

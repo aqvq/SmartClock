@@ -1,8 +1,8 @@
 // 本地时钟模块，使用DS1302
 // 在没有网络的情况下，提供时钟
 
-#ifndef SHANG_RTC
-#define SHANG_RTC
+#ifndef SHANG_RTC_H
+#define SHANG_RTC_H
 
 #include "conf.h"
 #include <Arduino.h>

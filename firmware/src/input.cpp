@@ -38,7 +38,9 @@ static void encoder_read(lv_indev_drv_t *indev_drv, lv_indev_data_t *data)
     encoder_diff = encoder.getCount() - encoder_position;
     encoder_position = encoder.getCount();
     data->enc_diff = encoder_diff;
-
+#if ROTATION
+    data->enc_diff = 0 - data->enc_diff; // 反转方向
+#endif
     if (digitalRead(ENCODER_SW) == LOW)
     {
         if (digitalRead(ENCODER_SW) == LOW)

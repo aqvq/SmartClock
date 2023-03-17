@@ -1,8 +1,8 @@
 // 语音模块，实现语音播报和闹铃等音效
 // 使用DFPlayer Mini模块
 
-#ifndef AUDIO_SHANG
-#define AUDIO_SHANG
+#ifndef AUDIO_SHANG_H
+#define AUDIO_SHANG_H
 
 #include <Arduino.h>
 #include <DFRobotDFPlayerMini.h>

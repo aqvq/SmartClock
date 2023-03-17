@@ -10,8 +10,7 @@
 #include <esp_wifi.h> //用于esp_wifi_restore() 删除保存的wifi信息
 #include "conf.h"
 #include "ds1302.h"
-
-extern const int LED; // 设置LED引脚
+#include "cloud.h"
 
 //===========需要调用的函数===========
 void network_init();    // 初始化网络

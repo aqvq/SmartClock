@@ -4,7 +4,8 @@
 #define SHANG_DHT_H
 
 #include <DHT.h>
-#define DHTPIN 25
+#include "conf.h"
+
 #define DHTTYPE DHT11
 // 温湿度传感器初始化
 void dht_init();

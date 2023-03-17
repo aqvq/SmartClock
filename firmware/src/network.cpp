@@ -1,18 +1,14 @@
 #include "network.h"
 
-const byte DNS_PORT = 53; // 设置DNS端口号
-const int webPort = 80;   // 设置Web端口号
 // const char* AP_PASS  = "";               //这里不设置设置AP热点密码
 String scanNetworksID = "";     // 用于储存扫描到的WiFi ID
 IPAddress apIP(192, 168, 4, 1); // 设置AP的IP地址
 String wifi_ssid = "";          // 暂时存储wifi账号密码
 String wifi_pass = "";          // 暂时存储wifi账号密码
-const int LED = 12;             // 设置LED引脚
 bool resetPressed = false;
 static unsigned long timePressed = 0;
 DNSServer dnsServer;       // 创建dnsServer实例
 WebServer server(webPort); // 开启web服务, 创建TCP SERVER,参数: 端口号,最大连接数
-const int resetPin = 13;   // 设置重置按键引脚,用于删除WiFi信息
 bool first_sync = false;
 unsigned long sync_time;
 extern RtcDS1302<ThreeWire> Rtc;
@@ -34,6 +30,9 @@ void reset_device()
  */
 void network_init()
 {
+#if ENABLE_BLINKER
+    blinker_init(); // 云服务初始化
+#endif
     // Serial.begin(115200);            // 波特率
     pinMode(resetPin, INPUT_PULLUP); // 按键上拉输入模式(默认高电平输入,按下时下拉接到低电平)
     LEDinit();                       // LED用于显示WiFi状态
@@ -45,6 +44,9 @@ void network_init()
  */
 void network_routine()
 {
+#if ENABLE_BLINKER
+    blinker_routine();
+#endif
     // 监听重置按键长按状态
     if (digitalRead(resetPin) == LOW)
     {
