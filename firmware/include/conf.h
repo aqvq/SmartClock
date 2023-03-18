@@ -16,7 +16,7 @@
 #define config_file "/config.txt"    // 闹钟数据存储的文件名
 #define screen_light_pin 22          // TFT屏幕背光引脚
 #define blinker_auth "e8d111f79e67"  // Blinker设备码
-#define ENABLE_BLINKER 0             // 使用Blinker功能
+#define ENABLE_BLINKER 1             // 使用Blinker功能
 #define ENABLE_NETWORK 1             // 使用网络功能
 #define ROTATION 1                   // 设置旋转编码器旋转方向
 
@@ -41,6 +41,7 @@ constexpr uint16_t temperature_string_size = 30;                          // 温
 constexpr uint16_t screen_buffer_size = screen_height * screen_width / 4; // 屏幕缓冲区大小
 constexpr uint16_t max_clock_num = 24 * 60;                               // 最大闹钟数量，采用枚举法，共24*60个
 constexpr uint32_t update_time_period = 1000 * 60 * 60 * 24;              // 网络校时周期
+
 // 字体声明
 LV_FONT_DECLARE(lv_chinese_20); // 中文20号微软雅黑字体
 LV_FONT_DECLARE(lv_chinese_48); // 中文48号微软雅黑字体

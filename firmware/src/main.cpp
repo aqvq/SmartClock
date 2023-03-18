@@ -5,12 +5,10 @@
 #include "display.h"
 #include "network.h"
 #include "ds1302.h"
-#include <TaskScheduler.h>
 #include "audio.h"
 
-// Scheduler ts;
-// Task task_network(0, TASK_FOREVER, &network_routine, &ts, true);
-// Task task_display(0, TASK_FOREVER, &display_routine, &ts, true);
+void task_network(void *p);
+void task_display(void *p);
 
 void setup()
 {
@@ -20,18 +18,33 @@ void setup()
   clock_init(); // 持久化数据初始化
   audio_init(); // 音频初始化
 #if ENABLE_NETWORK
-  network_init(); // 网络初始化
+  xTaskCreate(task_network, "network", 10000, NULL, 1, NULL);
 #endif
-  display_init(); // 显示屏初始化
+  xTaskCreate(task_display, "display", 10000, NULL, 2, NULL);
   Serial.println("SmartClock Starting...");
-  // ts.startNow();
 }
 
 void loop()
 {
-#if ENABLE_NETWORK
-  network_routine();
-#endif
-  display_routine();
-  // ts.execute();
+  vTaskDelay(1);
+}
+
+void task_network(void *p)
+{
+  network_init(); // 网络初始化
+  while (1)
+  {
+    network_routine();
+    vTaskDelay(1);
+  }
+}
+
+void task_display(void *p)
+{
+  display_init(); // 显示屏初始化
+  while (1)
+  {
+    display_routine();
+    vTaskDelay(10);
+  }
 }

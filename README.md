@@ -11,6 +11,7 @@
 ## 技术要点
 - C/C++
 - ESP32
+- FreeRTOS
 - Arduino
 - LVGL
 
@@ -47,6 +48,7 @@
 - 增加网络指示灯，当指示灯闪烁表示正在尝试连接已有WiFi，指示灯暗表示需要配置网络，指示灯常亮表示已成功连接网络
 - 增加重置按键，当用户长按后，指示灯闪烁提示，清除记忆的网络连接重新配置
 - 用户可以自定义音量和屏幕亮度
+- 实现温湿度数据上传手机，用户可以通过APP随时查看实时温湿度数据
 
 ## 文件结构
 
@@ -79,3 +81,5 @@
 - [Arduino运行FreeRTOS操作系统_TonyIOT的博客-CSDN博客](https://blog.csdn.net/TonyIOT/article/details/105728225)
 - [创客 ESP32 Arduino 指南- Serial, Serial1, Serial2 注意事项 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/79911193)
 - [DFPlayer Mini 播放器模块_DFR0299_产品说明_使用教程 (dfrobot.com.cn)](https://wiki.dfrobot.com.cn/_SKU_DFR0299_DFPlayer_Mini模块#target_0)
+- [Arduino学习笔记：FreeRTOS——ESP32多任务处理_esp32多线程arduino_哈哈浩丶的博客-CSDN博客](https://blog.csdn.net/weixin_45783574/article/details/123948055)
+- [FreeRTOS 独立看门狗监测任务执行状态 - Crystal_Guang - 博客园 (cnblogs.com)](https://www.cnblogs.com/yangguang-it/p/7229565.html)

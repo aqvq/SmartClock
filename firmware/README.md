@@ -36,14 +36,17 @@
 1. 将配置文件`include/User_Setup.h`覆盖库`TFT_eSPI`中的同名文件
 2. 将配置文件`include/lv_conf.h`覆盖库`lvgl`中的同名文件
 3. 将库`DHT sensor library`中的文件`DHT_U.cpp`和`DHT_U.h`删除，否则会报错
-4. 要实现`温湿度数据上传至手机`需要下载`Blinker`APP，并将`ENABLE_BLINKER`设置为1，将`blinker_auth`改为自己的设备KEY
+4. 要演示`温湿度数据上传至手机`功能，需要下载`Blinker`APP，确认代码中`ENABLE_BLINKER`设置为1，并将`blinker_auth`改为自己的设备KEY
 
 ## 文件结构
 
 > 更详细的项目逻辑解释在源代码的注释中
 
 - /include 程序头文件
+- /lib 程序所需的库
 - /src 程序源代码
+  - /audio 语音文件
+  - /fonts 汉字字库
   - main.cpp 主程序
   - network.cpp 网络配置模块
   - ui.cpp 交互界面模块
@@ -54,21 +57,6 @@
   - clock.cpp 闹钟与配置数据处理模块
   - ds1302.cpp 本地时钟模块
   - cloud.cpp 数据上传模块
-  - /fonts 汉字字库
-  - /audio 语音文件
-- /lib 程序所需的库
-  - Adafruit Unified Sensor 传感器驱动
-  - DFRobotDFPlayerMini 音频驱动
-  - DHT sensor library 温湿度传感器驱动
-  - ESP32Encoder 旋转编码器驱动
-  - lvgl 图形界面驱动
-  - RTC 本地实时时钟驱动
-  - TaskScheduler 任务调度模块
-  - TFT_eSPI 显示屏驱动
-  - Unity 集成测试模块
-  - Blinker IoT模块
-
-
 
 ## 技术总结
 
