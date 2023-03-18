@@ -45,7 +45,8 @@ void network_init()
 void network_routine()
 {
 #if ENABLE_BLINKER
-    blinker_routine();
+    if (WiFi.status() == WL_CONNECTED)
+        blinker_routine();
 #endif
     // 监听重置按键长按状态
     if (digitalRead(resetPin) == LOW)
@@ -61,7 +62,6 @@ void network_routine()
             if ((millis() - timePressed) > 5000)
             {
                 Serial.println(millis());
-                // reset_device();
                 connect_wifi_config(); // 配置wifi
             }
         }
@@ -79,7 +79,7 @@ void network_routine()
         config_ntp_time();
         sync_time = millis();
     }
-    if (WiFi.status() != WL_CONNECTED || (millis() - sync_time >= 1000 * 60 * 60))
+    if (WiFi.status() != WL_CONNECTED || (millis() - sync_time >= update_time_period))
     {
         first_sync = false;
     }
@@ -218,11 +218,8 @@ void initWebServer()
     // 必须添加第二个参数HTTP_GET，以下面这种格式去写，否则无法强制门户
     server.on("/", HTTP_GET, handleRoot);                  //  当浏览器请求服务器根目录(网站首页)时调用自定义函数handleRoot处理，设置主页回调函数，必须添加第二个参数HTTP_GET，否则无法强制门户
     server.on("/configwifi", HTTP_POST, handleConfigWifi); //  当浏览器请求服务器/configwifi(表单字段)目录时调用自定义函数handleConfigWifi处理
-
-    server.onNotFound(handleNotFound); // 当浏览器请求的网络资源无法在服务器找到时调用自定义函数handleNotFound处理
-
-    server.begin(); // 启动TCP SERVER
-
+    server.onNotFound(handleNotFound);                     // 当浏览器请求的网络资源无法在服务器找到时调用自定义函数handleNotFound处理
+    server.begin();                                        // 启动TCP SERVER
     Serial.println("WebServer started!");
 }
 
@@ -244,7 +241,7 @@ bool scanWiFi()
     }
     else
     {
-        Serial.print(n);
+        Serial.println(n);
         Serial.println("Networks found:");
         for (int i = 0; i < n; ++i)
         {
@@ -311,10 +308,9 @@ void connect_wifi_init()
 void connect_wifi_config()
 {
     Serial.println(""); // 主要目的是为了换行符
-    Serial.println("WIFI auto connection failed, starting AP for web configuration now...");
+    Serial.println("Starting AP for web configuration now...");
     blinkLED(LED, 3, 200); // LED闪烁
-    // digitalWrite(LED, LOW); // 关于LED，不需要可删除
-    wifiConfig(); // 开始配网功能
+    wifiConfig();          // 开始配网功能
 }
 
 /*

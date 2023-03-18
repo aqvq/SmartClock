@@ -2,7 +2,7 @@
 #define SHANG_CLOUD_H
 
 #include "conf.h"
-#include "sensors.h"
+
 void dataRead(const String &data);
 void heartbeat();
 void blinker_init();

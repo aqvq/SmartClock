@@ -174,10 +174,7 @@ void ui_time_timer100(lv_timer_t *timer)
 {
     lv_obj_t **children = (lv_obj_t **)timer->user_data;
     dht_update(&humidity, &temperature);
-    // getLocalTime(&timeinfo);
     now = Rtc.GetDateTime();
-    // if (WiFi.status() == WL_CONNECTED)
-    // {
     if (now.IsValid())
     {
         if (WiFi.status() != WL_CONNECTED || sync_time != 0)
@@ -206,40 +203,6 @@ void ui_time_timer100(lv_timer_t *timer)
         sprintf(temperature_string, "");
     }
 
-    // if (timeinfo.tm_year != 70)
-    // {
-    //     if (time_status != NORMAL)
-    //         initialized_time = millis();
-    //     time_status = NORMAL;
-    //     sprintf(time_string, "%02d:%02d:%02d", now.Hour(), now.Minute(), now.Second());
-    //     sprintf(date_string, "%04d年%02d月%02d日 %s", timeinfo.tm_year + 1900, timeinfo.tm_mon + 1, timeinfo.tm_mday, WDAY_NAMES[timeinfo.tm_wday]);
-    //     sprintf(humidity_string, "湿度: %2.1f%%", humidity);
-    //     sprintf(temperature_string, "温度: %2.1f°C", temperature);
-    // }
-    // else
-    // {
-    //     if (time_status != SETTIME)
-    //     {
-    //         sprintf(time_string, "同步时间");
-    //         sprintf(date_string, "");
-    //         sprintf(humidity_string, "");
-    //         sprintf(temperature_string, "");
-    //         configTime(8 * 3600, 0, ntp_server);
-    //         time_status = SETTIME;
-    //     }
-    // }
-    // }
-    // else
-    // {
-    //     if (time_status != NONET)
-    //     {
-    //         sprintf(time_string, "连接网络");
-    //         sprintf(date_string, "");
-    //         sprintf(humidity_string, "");
-    //         sprintf(temperature_string, "");
-    //         time_status = NONET;
-    //     }
-    // }
     lv_label_set_text(children[0], time_string);
     lv_label_set_text(children[1], humidity_string);
     lv_label_set_text(children[2], temperature_string);
@@ -262,7 +225,7 @@ void ui_time_timer120(lv_timer_t *timer)
     last_hour = now.Hour();
 }
 
-void ui_time_timer800(lv_timer_t *timer)
+void ui_time_timer900(lv_timer_t *timer)
 {
     now = Rtc.GetDateTime();
     // 闹铃功能
@@ -278,10 +241,9 @@ void ui_time_timer800(lv_timer_t *timer)
     }
 
     // 整点报时
-    if (now.Second() == 0 && now.Minute() == 0)
-    // if (now.Second() == 0)
+    if (now.Minute() == 0 && now.Second() == 0)
     {
-        myDFPlayer.advertise(now.Hour());
+        myDFPlayer.playFolder(2, now.Hour());
     }
 }
 
@@ -837,7 +799,7 @@ void ui_time_init(lv_obj_t *parent)
     static lv_obj_t *ui_time_obj_children[4] = {ui_Label19, ui_Label18, ui_Label16, ui_Label20};
     lv_timer_t *timer1 = lv_timer_create(ui_time_timer100, 100, ui_time_obj_children);
     lv_timer_t *timer2 = lv_timer_create(ui_time_timer120, 120, NULL);
-    lv_timer_t *timer4 = lv_timer_create(ui_time_timer800, 800, NULL);
+    lv_timer_t *timer4 = lv_timer_create(ui_time_timer900, 900, NULL);
 }
 
 void ui_time_sync_time_cb(lv_event_t *e)

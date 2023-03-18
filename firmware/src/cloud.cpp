@@ -1,12 +1,14 @@
 
 #define BLINKER_WIFI
+#define BLINKER_WITHOUT_SSL
 #include <Blinker.h>
 #include "cloud.h"
 
-extern DHT dht;
 BlinkerNumber blinker_data_temperature("temperature");
 BlinkerNumber blinker_data_humidity("humidity");
 uint32_t read_time = 0;
+extern float humidity;
+extern float temperature;
 
 void dataRead(const String &data)
 {
@@ -18,8 +20,8 @@ void dataRead(const String &data)
 
 void heartbeat()
 {
-    blinker_data_temperature.print(dht.readTemperature());
-    blinker_data_humidity.print(dht.readHumidity());
+    blinker_data_temperature.print(temperature);
+    blinker_data_humidity.print(humidity);
 }
 
 void blinker_init()
@@ -33,10 +35,4 @@ void blinker_init()
 void blinker_routine()
 {
     Blinker.run();
-    if (read_time == 0 || (millis() - read_time) >= 2000)
-    {
-        read_time = millis();
-        BLINKER_LOG("Temperature: ", dht.readTemperature(), " *C");
-        BLINKER_LOG("Humidity: ", dht.readHumidity(), " %");
-    }
 }

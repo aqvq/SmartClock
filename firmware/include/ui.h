@@ -37,7 +37,7 @@ void ui_time_timer100(lv_timer_t *timer);
 // 定时器计时逻辑
 void ui_time_timer120(lv_timer_t *timer);
 // 闹钟响铃与整点报时逻辑
-void ui_time_timer800(lv_timer_t *timer);
+void ui_time_timer900(lv_timer_t *timer);
 // 创建闹钟页面按下取消按钮事件
 void ui_clock_create_cancel_event(lv_event_t *event);
 // 闹钟列表页面按下删除按钮
